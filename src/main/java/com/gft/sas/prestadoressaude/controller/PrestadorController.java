@@ -2,10 +2,10 @@ package com.gft.sas.prestadoressaude.controller;
 
 import com.gft.sas.prestadoressaude.model.Especialidade;
 import com.gft.sas.prestadoressaude.model.Prestador;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.gft.sas.prestadoressaude.services.PrestadorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,10 @@ import static java.util.Arrays.asList;
 @RestController
 @RequestMapping(value = "/prestadores")
 public class PrestadorController {
+
+    @Autowired
+    private PrestadorService prestadorService;
+
     /*@GetMapping
     public List<Prestador> listAll(){
         return asList(
@@ -45,9 +49,12 @@ public class PrestadorController {
                 new Prestador(25, "Eliza"));
     }*/
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Prestador> listar(){
-        Prestador p1 = new Prestador(1, "Ana");
+    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> listar(@PathVariable Integer id){
+        Prestador obj = prestadorService.buscar(id);
+        return ResponseEntity.ok().body(obj);
+
+        /*Prestador p1 = new Prestador(1, "Ana");
         Prestador p2 = new Prestador(2, "João");
         Prestador p3 = new Prestador(3, "Fabio");
         Prestador p4 = new Prestador(4, "Bruno");
@@ -100,7 +107,7 @@ public class PrestadorController {
         lista.add(p24);
         lista.add(p25);
 
-        return lista;
+        return lista;*/
         //Especialidade e1 = new Especialidade();
     }
 }
