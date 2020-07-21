@@ -1,13 +1,10 @@
 package com.gft.sas.prestadoressaude.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Prestador implements Serializable {
@@ -16,7 +13,11 @@ public class Prestador implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    //private List<Especialidade> especialidades = new ArrayList<>();
+
+    // usar set, pois set é um conjunto de strings e não aceita repetição
+    @ElementCollection
+    @CollectionTable(name="ESPECIALIDADE")
+    private Set<String> especialidades = new HashSet<>();
 
     public Prestador(){
     }
@@ -43,13 +44,13 @@ public class Prestador implements Serializable {
         this.nome = nome;
     }
 
-    /*public List<Especialidade> getEspecialidades() {
+    public Set<String> getEspecialidades() {
         return especialidades;
     }
 
-    public void setEspecialidades(List<Especialidade> especialidades) {
+    public void setEspecialidades(Set<String> especialidades) {
         this.especialidades = especialidades;
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {
